@@ -1,4 +1,5 @@
 const path = require("path");
+require("dotenv").config({path: __dirname + "/../../../.env"});
 module.exports = {
 	"stories": [
 		"../stories/**/*.stories.mdx",
@@ -24,7 +25,7 @@ module.exports = {
 			propFilter: (prop) => (prop.parent ? !/node_modules/.test(prop.parent.fileName) : true),
 		},
 	},
-	"webpackFinal": async (config, { configType }) => {
+	"webpackFinal": async (config, {configType}) => {
 		const fileLoaderRule = config.module.rules.find(rule => rule.test && rule.test.test && rule.test.test('.svg'));
 		fileLoaderRule.exclude = /\.svg$/;
 
@@ -35,9 +36,35 @@ module.exports = {
 		});
 		config.module.rules.push({
 			test: /\.scss$/,
-			use: ['style-loader', 'css-loader', 'sass-loader'],
-			include: path.resolve(__dirname, '../'),
+			use: ['style-loader', 'css-loader', {
+				loader: 'sass-loader',
+				options: {
+					additionalData: (content, loaderContext)  => {
+						const { resourcePath } = loaderContext;
+						const match = process.env.ALIAS_GLOBAL_SCSS_PATH.match(/@styles\/(?<path>.*.scss)/);
+						if (!match || !match[1]) throw Error("Invalid ALIAS_GLOBAL_SCSS_PATH env param");
+						const path = match[1];
+						if (resourcePath.indexOf(path) !== -1) return content;
+						return `@import \"@styles/${path}\";` + content;
+					}
+				}
+			}],
+			include: path.resolve(__dirname, '../../'),
 		});
+		config.resolve.alias = {
+			...config.resolve.alias,
+			"@ui": path.resolve(__dirname, "../../ui/"),
+			"@pages": path.resolve(__dirname, "../../pages/"),
+			"@hooks": path.resolve(__dirname, "../../hooks/"),
+			"@images": path.resolve(__dirname, "../../../public/images/"),
+			"@components": path.resolve(__dirname, "../../components/"),
+			"@utils": path.resolve(__dirname, "../../utils/"),
+			"@translations": path.resolve(__dirname, "../../translations/"),
+			"@layouts": path.resolve(__dirname, "../../layouts/"),
+			"@themes": path.resolve(__dirname, "../../themes/"),
+			"@styles": path.resolve(__dirname, "../../styles/"),
+		}
+
 		return config;
 	},
 };
