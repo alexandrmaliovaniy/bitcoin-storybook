@@ -9,9 +9,18 @@ export default {
 
 const Template = (args: ComponentProps<typeof Toggle>) => {
 	const [value, setValue] = useState<boolean>(false);
+	const [disabled, setDisabled] = useState<boolean>(false);
+
+	const OnMutation = () => {
+		setValue(!value);
+		setDisabled(true);
+		setTimeout(() => {
+			setDisabled(false);
+		}, 1000);
+	};
 
 	return (
-		<Toggle {...args} value={value} onMutation={() => setValue(!value)}/>
+		<Toggle {...args} value={value} disabled={disabled} onMutation={OnMutation}/>
 	);
 };
 

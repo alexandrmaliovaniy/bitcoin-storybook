@@ -14,7 +14,11 @@ export const Default: ComponentStory<typeof UToggle> = Template.bind({});
 Default.args = {
 	small: false,
 	value: false,
-	onMutation: () => console.log("Change")
+	onMutation: (value) => {
+		return new Promise<boolean>((resolve) => {
+			resolve(true);
+		});
+	}
 };
 
 Default.parameters = {
