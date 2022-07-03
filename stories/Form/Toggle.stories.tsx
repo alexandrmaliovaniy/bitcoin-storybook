@@ -3,7 +3,7 @@ import { ComponentMeta, ComponentStory } from "@storybook/react";
 import { ComponentProps, useState } from "react";
 
 export default {
-	title: "Form/Toggle",
+	title: "Form/Toggle/CToggle",
 	component: Toggle
 } as ComponentMeta<typeof Toggle>;
 

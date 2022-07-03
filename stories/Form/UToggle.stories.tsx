@@ -3,7 +3,7 @@ import { ComponentMeta, ComponentStory } from "@storybook/react";
 import { ComponentProps, useState } from "react";
 
 export default {
-	title: "Form/UToggle",
+	title: "Form/Toggle/UToggle",
 	component: UToggle
 } as ComponentMeta<typeof UToggle>;
 

@@ -3,7 +3,7 @@ import { ComponentMeta, ComponentStory } from "@storybook/react";
 import { ComponentProps, useState } from "react";
 
 export default {
-	title: "UI/UInlineTabs",
+	title: "UI/InlineTabs/UInlineTabs",
 	component: UInlineTabs
 } as ComponentMeta<typeof UInlineTabs>;
 
